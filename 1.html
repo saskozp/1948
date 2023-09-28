@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text Output</title>
+    <style>
+        #inputText {
+            width: 400px;
+            height: 100px;
+        }
+
+        #output {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: black;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+			padding: 50px;
+        }
+    </style>
+    <script>
+        function startTyping() {
+            var inputText = document.getElementById("inputText").value;
+            var speed = parseInt(document.getElementById("typingSpeed").value);
+            var fontType = document.getElementById("fontType").value;
+            var fontSize = document.getElementById("fontSize").value;
+            var fontColor = document.getElementById("fontColor").value;
+
+            var outputDiv = document.getElementById("output");
+            outputDiv.innerHTML = ""; // Очищаем содержимое перед выводом нового текста
+
+            outputDiv.style.fontFamily = fontType;
+            outputDiv.style.fontSize = fontSize + "px";
+            outputDiv.style.color = fontColor;
+
+            var lines = inputText.split("\n");
+            var currentLine = 0;
+            var currentChar = 0;
+
+            function typeText() {
+                if (currentLine < lines.length) {
+                    var line = lines[currentLine];
+                    if (currentChar < line.length) {
+                        outputDiv.innerHTML += line.charAt(currentChar);
+                        currentChar++;
+                    } else {
+                        outputDiv.innerHTML += "<br>";
+                        currentLine++;
+                        currentChar = 0;
+                    }
+                    setTimeout(typeText, speed);
+                }
+            }
+
+            typeText();
+        }
+
+        function changeBackground() {
+            var backgroundColor = document.getElementById("backgroundColor").value;
+            document.body.style.backgroundColor = backgroundColor;
+        }
+    </script>
+</head>
+<body>
+    <textarea id="inputText" placeholder="Введите текст с переносами строк"></textarea>
+    <div>
+        <label for="typingSpeed">Скорость набора текста (миллисекунды):</label>
+        <input type="number" id="typingSpeed" value="50">
+    </div>
+    <div>
+        <label for="fontType">Тип шрифта:</label>
+        <select id="fontType">
+            <option value="Arial">Arial</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Courier New">Courier New</option>
+        </select>
+    </div>
+    <div>
+        <label for="fontSize">Размер шрифта (пиксели):</label>
+        <input type="number" id="fontSize" value="16">
+    </div>
+    <div>
+        <label for="fontColor">Цвет шрифта:</label>
+        <input type="color" id="fontColor" value="#000000">
+    </div>
+    <div>
+        <label for="backgroundColor">Цвет фона:</label>
+        <input type="color" id="backgroundColor" value="#ffffff" oninput="changeBackground()">
+    </div>
+    <div>
+        <button onclick="startTyping()">Запустить</button>
+    </div>
+    <div id="output"></div>
+</body>
+</html>
